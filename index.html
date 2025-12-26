@@ -442,7 +442,7 @@
                 <!-- Logo with Lime & Blue Colors -->
                 <div class="w-16 h-16 rounded-full lime-blue-gradient flex items-center justify-center shadow-lg">
                     <!-- <i class="fas fa-brain text-white text-2xl"></i> -->
-                     <img src="./assets/logo.png" class="w-14 h-14 rounded-full" alt="">
+                    <img src="./assets/logo.png" class="w-14 h-14 rounded-full" alt="">
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-primary font-montserrat">The Wonder<span
@@ -499,10 +499,27 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu lg:hidden fixed inset-y-0 right-0 w-64 bg-white shadow-2xl p-8">
+        <div style="
+    width: -webkit-fill-available;
+    height: max-content;
+" id="mobile-menu" class="mobile-menu lg:hidden fixed inset-y-0 right-0 w-64 bg-white shadow-2xl p-8">
             <button id="close-menu" class="absolute top-6 right-6 text-2xl text-gray-700">
                 <i class="fas fa-times"></i>
             </button>
+
+            <div class="flex items-center gap-3">
+                <!-- Logo with Lime & Blue Colors -->
+                <div class="w-16 h-16 rounded-full lime-blue-gradient flex items-center justify-center shadow-lg">
+                    <!-- <i class="fas fa-brain text-white text-2xl"></i> -->
+                    <img src="./assets/logo.png" class="w-14 h-14 rounded-full" alt="">
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-primary font-montserrat">The Wonder<span
+                            class="text-secondary ml-1">TezzDimag</span></h1>
+                    <p class="text-xs text-gray-600">Super Brain Power</p>
+                </div>
+            </div>
+
             <div class="mt-16 flex flex-col gap-6">
                 <a href="#home" class="text-xl font-medium text-gray-700 hover:text-primary transition">Home</a>
                 <a href="#about" class="text-xl font-medium text-gray-700 hover:text-primary transition">About</a>
@@ -680,7 +697,7 @@
 
                     <div class="mt-8">
                         <a href="#programs"
-                            class="inline-flex items-center gap-2 text-primary font-semibold hover:gap-4 transition-all">
+                            class="inline-flex text-[22px] items-center gap-2 text-primary font-semibold hover:gap-4 transition-all">
                             <span>Explore Our Programs</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -1570,27 +1587,39 @@
         }
 
         // Form Submission Handler
-        function handleFormSubmit(e) {
-            e.preventDefault();
+       function handleFormSubmit(e) {
+    e.preventDefault();
 
-            // Get form values
-            const formData = new FormData(e.target);
-            const formValues = Object.fromEntries(formData.entries());
+    const formData = new FormData(e.target);
+    const formValues = Object.fromEntries(formData.entries());
 
-            // In a real application, you would send this data to a server
-            // For demo purposes, we'll just show an alert
-            alert(`Thank you for your interest! We will contact you soon to schedule your free demo class.`);
+    // Build WhatsApp message
+    let message = `📚 *Free Demo Class Enquiry* \n\n`;
 
-            // Reset form
-            e.target.reset();
+    for (const key in formValues) {
+        message += `*${key.replace(/_/g, ' ').toUpperCase()}*: ${formValues[key]}\n`;
+    }
 
-            // Add animation to button
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.classList.add('animate-shake');
-            setTimeout(() => {
-                submitBtn.classList.remove('animate-shake');
-            }, 500);
-        }
+    message += `\nPlease contact me for the demo class. 😊`;
+
+    // Encode message
+    const encodedMessage = encodeURIComponent(message);
+
+    // WhatsApp URL
+    const whatsappNumber = "919689941705"; // country code included
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+    // Open WhatsApp
+    window.open(whatsappURL, "_blank");
+
+    // Button animation
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.classList.add('animate-shake');
+    setTimeout(() => submitBtn.classList.remove('animate-shake'), 500);
+
+    // Reset form
+    e.target.reset();
+}
 
         // Gallery Filter Functionality
         function filterGallery(category, resetCount = true) {
